@@ -24,7 +24,11 @@ app.use(bodyParser.json());
 
 //Rotas
 app.get("/",(req,res) =>{
-    res.render("index")
+    Pergunta.findAll({ raw: true}).then(perguntas => {
+        res.render("index",{
+            perguntas: perguntas
+        });
+    });
 });
 
 app.get("/perguntar",(req,res) => {
@@ -37,8 +41,8 @@ app.post("/salvarpergunta",(req,res) => {
     var descricao = req.body.descricao;
     
     Pergunta.create({
-        titulo: titulo,
-        descricao: descricao
+    titulo: titulo,
+    descricao: descricao
     }).then(() => {
         res.redirect("/");
     })
