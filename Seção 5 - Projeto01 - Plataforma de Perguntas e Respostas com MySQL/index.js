@@ -1,8 +1,18 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser")
-//TODO HTML deverá estar na pasta views
+const connection = require("./database/database")
+//Database
+connection
+.authenticate()
+.then(() =>{
+    console.log("Conexão feita com o banco de dados!")
+})
+.catch((msgErro) => {
+    console.log("erro")
+})
 
+//TODO HTML deverá estar na pasta views
 //Estou dizendo para o Express usar o EJS como View engine
 app.set('view engine','ejs');
 app.use(express.static('public'));
