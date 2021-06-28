@@ -1,3 +1,4 @@
+const { Model } = require("sequelize");
 const Sequelize = require("sequelize");
 const connection = require("./database");
 
@@ -12,5 +13,6 @@ const Pergunta = connection.define('perguntas',{
     }
 });
 
-Pergunta.sync({force: false}).then(() => {
-})
+Pergunta.sync({force: false}).then(() => {})
+
+module.exports = Pergunta
