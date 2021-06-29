@@ -55,16 +55,24 @@ app.post("/salvarpergunta",(req,res) => {
 app.get("/pergunta/:id", (req,res) =>{
     var id = req.params.id;
     Pergunta.findOne({
-    where: {id:id}
-}).then(pergunta => {
-    if(pergunta != undefined){ //Pergunta encontrada
-        res.render("pergunta",{
-            pergunta : pergunta
-        });
-    }else {  //Pergunta Não encontrada
-        res.redirect("/")
-    }
-})
+       where: {id:id}
+    }).then(pergunta => {
+        if(pergunta != undefined){ //Pergunta encontrada
+            Resposta.findAll({
+                where: {perguntaId : pergunta.id},
+                order:[
+
+                 ['id', 'DESC']            
+                ]}).then(respostas => {
+                res.render("pergunta",{
+                    pergunta : pergunta,
+                    respostas : respostas
+                });
+            });
+        }else {  //Pergunta Não encontrada
+            res.redirect("/")
+        }
+    })
 });
 
 app.post("/responder",(req,res) => {
@@ -75,7 +83,7 @@ app.post("/responder",(req,res) => {
         perguntaId : perguntaId
     }).then(() => {
          res.redirect("/pergunta/"+perguntaId) 
-    });
+        });
 });
 
 app.listen(8080,() => {
